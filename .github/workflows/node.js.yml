@@ -6,9 +6,6 @@ name: Node.js CI
 on: 
   push:
     branches: [ "main" ]
-    paths: 
-      - DevOps/**
-
   pull_request:
     branches: [ "main" ]
 
@@ -23,6 +20,14 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        path: '/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten'
+
+    - name: Set working directory
+      run: cd DevOps
+      working-directory: /devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
