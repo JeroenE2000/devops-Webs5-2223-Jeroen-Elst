@@ -22,18 +22,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        path: '/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten'
-
-    - name: Set working directory
-      run: cd DevOps
-      working-directory: /devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten
-    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+      working-directory: ./DevOps
     - run: npm run build --if-present
+      working-directory: ./DevOps
     - run: npm test
