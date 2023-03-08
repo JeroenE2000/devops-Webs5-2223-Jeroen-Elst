@@ -8,7 +8,7 @@ const client = new MongoClient(uri, {
 });
 
 async function getDb() {
-    if (!client.topology.isConnected()) {
+    if (!client.isConnected()) {
         await client.connect();
     }
     return client.db("mydb");
