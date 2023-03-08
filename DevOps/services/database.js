@@ -7,11 +7,14 @@ const client = new MongoClient(uri, {
     family: 4
 });
 
- 
+async function getDb() {
+    if (!client.isConnected()) {
+        await client.connect();
+    }
+    return client.db("mydb");
+}
 
-const db = client.db("mydb");
 module.exports = {
-    db: db,
+    getDb: getDb,
     client: client
-
 };
