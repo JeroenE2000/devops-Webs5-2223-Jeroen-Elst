@@ -40,5 +40,17 @@
   },
   "devDependencies": {
     "eslint": "^8.37.0"
-  }
+  },
+  "description": "devops-2223-JeroenE2000 created by GitHub Classroom",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avans-devops/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avans-devops/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten/issues"
+  },
+  "homepage": "https://github.com/avans-devops/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten#readme"
 }

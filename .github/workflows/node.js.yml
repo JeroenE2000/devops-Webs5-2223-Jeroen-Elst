@@ -5,7 +5,6 @@ name: Node.js Leuke cringe methode
 
 on:
   push:
-    paths: 'Photo_Prestiges/**'
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
@@ -16,7 +15,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: './Photo_Prestiges'
+        working-directory: '.'
 
     strategy:
       matrix:
@@ -30,7 +29,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: "./Photo_Prestiges/package-lock.json"
+        cache-dependency-path: "package-lock.json"
 
     - run: npm ci --legacy-peer-deps
     - run: npm run build --if-present
@@ -39,9 +38,8 @@ jobs:
     - name: Jest coverage report
       uses: ArtiomTr/jest-coverage-report-action@v2
       with:
-        working-directory: ./Photo_Prestiges
         github-token: ${{ secrets.GITHUB_TOKEN }}
         
     - name: ESLinter
       run: npm run lint
-      working-directory: ./Photo_Prestiges
+      working-directory: .
