@@ -1,5 +1,8 @@
 /* eslint-disable no-undef */
 const mongoose = require("mongoose");
+const { MongoMemoryServer } = require("mongodb-memory-server");
+
+let mongod;
 let db;
 
 async function createNewTarget(req) {
@@ -42,12 +45,18 @@ async function createNewTarget(req) {
 
 describe("createNewTarget", () => {
   beforeAll(async () => {
-    await mongoose.connect(process.env.TARGETSERVICE_DB_CONNECTION);
+    mongod = await MongoMemoryServer.create();
+    const uri = mongod.getUri();
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     db = mongoose.connection;
   });
 
   afterAll(async () => {
     await mongoose.connection.close();
+    await mongod.stop();
   });
 
   it("should create a new target in the database", async () => {
