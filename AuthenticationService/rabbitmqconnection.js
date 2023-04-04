@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const amqp = require("amqplib");
 require("dotenv").config();
-const uri = "amqp://rabbitmq:5672";
+const uri = "amqp://localhost:5672";
 let rabbitmqconnection = null;
 let isConnected = false;
 
