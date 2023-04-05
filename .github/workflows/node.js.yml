@@ -30,7 +30,8 @@ jobs:
     - run: npm ci --legacy-peer-deps
     - run: npm run build --if-present
     # Replace the "npm test" command with "docker-compose run app npm test" to run your tests against the MongoDB container
-    - run: docker-compose run mongodb npm test --coverage
+    - run: docker-compose run -e MICROSERVICE_BASE_PORT=3016 -e TARGET_SERVICE_URL=http://targetservice:3012 -e SCORE_SERVICE_URL=http://scoreservice:3038 -e EXTERNAL_SERVICE_URL=http://externalservice:3039 -e AUTHENTICATION_SERVICE_URL=http://authenticationservice:3015 -e JWT_SECRET=tasmanianDevil -e OPAQUE_TOKEN=1234567890 -e AUTHENTICATION_SERVICE_PORT=3015 -e AUTHENTICATIONSERVICE_DB_CONNECTION=mongodb://localhost:27017/auth -e EXTERNAL_SERVICE_PORT=3039 -e EXTERNESERVICE_DB_CONNECTION=mongodb://localhost:27017/photoprestiges -e SCORE_SERVICE_PORT=3038 -e SCORESERVICE_DB_CONNECTION=mongodb://localhost:27017/score -e TARGET_SERVICE_PORT=3012 -e TARGETSERVICE_DB_CONNECTION=mongodb://localhost:27017/target mongodb npm test --coverage
+
     
     - name: Jest coverage report
       uses: ArtiomTr/jest-coverage-report-action@v2
