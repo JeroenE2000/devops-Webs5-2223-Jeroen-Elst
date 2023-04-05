@@ -1,10 +1,9 @@
-# File: .github/workflows/workflow.yml
 on:
   pull_request:
     branches:
       - main
 
-name: CI
+name: okteto-main-publish
 
 jobs:
   devflow:
@@ -21,12 +20,11 @@ jobs:
     - name: "Activate Namespace"
       uses: okteto/namespace@latest
       with:
-        namespace: jeroene2000
+        name: jeroene2000
 
     - name: "Trigger the pipeline"
       uses: okteto/pipeline@latest
       with:
         name: pr-${{ github.event.number }}
-        timeout: 8m
+        timeout: 15m
         skipIfExists: true
-        variables: "DB_HOST=mysql,CONFIG_PATH=/tmp/config.yaml"
