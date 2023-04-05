@@ -67,14 +67,14 @@ services:
       dockerfile: Dockerfile
     env_file: ./.env
     ports:
-      - "${MICROSERVICE_BASE_PORT}:3016"
+      - 3016:3016
     environment:
-      MICROSERVICE_BASE_PORT: ${MICROSERVICE_BASE_PORT}
-      TARGET_SERVICE_URL: ${TARGET_SERVICE_URL}
-      SCORE_SERVICE_URL: ${SCORE_SERVICE_URL}
-      EXTERNAL_SERVICE_URL: ${EXTERNAL_SERVICE_URL}
-      AUTHENTICATION_SERVICE_URL: ${AUTHENTICATION_SERVICE_URL}
-      JWT_SECRET: ${JWT_SECRET}
+      MICROSERVICE_BASE_PORT: http://api-gateway:3016
+      TARGET_SERVICE_URL: http://targetservice:3012
+      SCORE_SERVICE_URL: http://scoreservice:3038
+      EXTERNAL_SERVICE_URL: http://externalservice:3039
+      AUTHENTICATION_SERVICE_URL: http://authenticationservice:3015
+      JWT_SECRET: tasmanianDevil
     depends_on:
       - mongodb
   
@@ -85,10 +85,10 @@ services:
       dockerfile: Dockerfile
     env_file: ./.env
     ports:
-      - "${AUTHENTICATION_SERVICE_PORT}:3015"
+      - 3015:3015
     environment:
-      AUTHENTICATION_SERVICE_PORT: ${AUTHENTICATION_SERVICE_PORT}
-      AUTHENTICATIONSERVICE_DB_CONNECTION: ${AUTHENTICATIONSERVICE_DB_CONNECTION}
+      AUTHENTICATION_SERVICE_PORT: 3015
+      AUTHENTICATIONSERVICE_DB_CONNECTION: mongodb://mongodb:27017/auth
     depends_on:
       mongodb:
         condition: service_started
@@ -101,11 +101,11 @@ services:
       dockerfile: Dockerfile
     env_file: ./.env
     ports:
-      - "${EXTERNAL_SERVICE_PORT}:3039"
+      - 3039:3039
     environment:
-      EXTERNAL_SERVICE_PORT: ${EXTERNAL_SERVICE_PORT}
-      EXTERNESERVICE_DB_CONNECTION: ${EXTERNESERVICE_DB_CONNECTION}
-      OPAQUE_TOKEN: ${OPAQUE_TOKEN}
+      EXTERNAL_SERVICE_PORT: 3039
+      EXTERNESERVICE_DB_CONNECTION: mongodb://mongodb:27017/photoprestiges
+      OPAQUE_TOKEN: 1234567890
     depends_on:
       mongodb:
         condition: service_started
@@ -119,11 +119,11 @@ services:
       dockerfile: Dockerfile
     env_file: ./.env
     ports:
-      - "${SCORE_SERVICE_PORT}:3038"
+      - 3038:3038
     environment:
-      SCORE_SERVICE_PORT: ${SCORE_SERVICE_PORT}
-      SCORESERVICE_DB_CONNECTION: ${SCORESERVICE_DB_CONNECTION}
-      OPAQUE_TOKEN: ${OPAQUE_TOKEN}
+      SCORE_SERVICE_PORT: 3038
+      SCORESERVICE_DB_CONNECTION: mongodb://mongodb:27017/score
+      OPAQUE_TOKEN: 1234567890
     depends_on:
       mongodb:
         condition: service_started
@@ -136,11 +136,11 @@ services:
       dockerfile: Dockerfile
     env_file: ./.env
     ports:
-      - "${TARGET_SERVICE_PORT}:3012"
+      - 3012:3012
     environment:
-      TARGET_SERVICE_PORT: ${TARGET_SERVICE_PORT}
-      TARGETSERVICE_DB_CONNECTION: ${TARGETSERVICE_DB_CONNECTION}
-      OPAQUE_TOKEN: ${OPAQUE_TOKEN}
+      TARGET_SERVICE_PORT: 3012
+      TARGETSERVICE_DB_CONNECTION: mongodb://mongodb:27017/target
+      OPAQUE_TOKEN: 1234567890
     depends_on:
       mongodb:
         condition: service_started
