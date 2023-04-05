@@ -13,5 +13,6 @@ module.exports = {
 };
 
 process.env = Object.assign(process.env, {
-  TARGETSERVICE_DB_CONNECTION: "mongodb://localhost:27017/target"
+  TARGETSERVICE_DB_CONNECTION: "mongodb://localhost:27017/target",
+  TESTING: true
 });
