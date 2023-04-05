@@ -1,0 +1,32 @@
+# File: .github/workflows/workflow.yml
+on:
+  pull_request:
+    branches:
+      - main
+
+name: CI
+
+jobs:
+  devflow:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@main
+
+    - name: context
+      uses: okteto/context@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+
+    - name: "Activate Namespace"
+      uses: okteto/namespace@latest
+      with:
+        namespace: jeroene2000
+
+    - name: "Trigger the pipeline"
+      uses: okteto/pipeline@latest
+      with:
+        name: pr-${{ github.event.number }}
+        timeout: 8m
+        skipIfExists: true
+        variables: "DB_HOST=mysql,CONFIG_PATH=/tmp/config.yaml"
