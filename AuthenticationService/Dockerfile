@@ -1,5 +1,6 @@
 FROM node:alpine AS build
 
+
 WORKDIR /app
 
 # Copy the authenticationservice code and dependicies
