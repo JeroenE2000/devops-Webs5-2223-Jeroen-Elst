@@ -5,6 +5,24 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+  
+env:
+  EXTERNESERVICE_DB_CONNECTION=mongodb://mongodb:27017/photoprestiges
+  TARGETSERVICE_DB_CONNECTION=mongodb://mongodb:27017/target
+  SCORESERVICE_DB_CONNECTION=mongodb://mongodb:27017/score
+  AUTHENTICATIONSERVICE_DB_CONNECTION=mongodb://mongodb:27017/auth
+  JWT_SECRET=tasmanianDevil
+  OPAQUE_TOKEN=1234567890
+  TARGET_SERVICE_URL=http://targetservice:3012
+  SCORE_SERVICE_URL=http://scoreservice:3038
+  EXTERNAL_SERVICE_URL=http://externalservice:3039
+  AUTHENTICATION_SERVICE_URL=http://authenticationservice:3015
+  MICROSERVICE_BASE_URL=http://api-gateway:3016
+  TARGET_SERVICE_PORT=3012
+  SCORE_SERVICE_PORT=3038
+  EXTERNAL_SERVICE_PORT=3039
+  AUTHENTICATION_SERVICE_PORT=3015
+  MICROSERVICE_BASE_PORT=3016
 
 jobs:
   build:
