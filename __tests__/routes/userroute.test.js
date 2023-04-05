@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const request = require("supertest");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -5,6 +6,16 @@ const User = require("../../AuthenticationService/Models/User");
 const { jwtOptions , app } = require("../../AuthenticationService/index");
 
 describe("POST /login", () => {
+  let server = null;
+  beforeAll(async () => {
+    // Connect to the database
+    server = app.listen(3015, () => console.log("Listening on port 3000"));
+  });
+
+  afterAll(async () => {
+    server.close();
+  });
+
   it("returns a token for valid credentials", async () => {
     // Create a mock user with valid credentials
     const user = {

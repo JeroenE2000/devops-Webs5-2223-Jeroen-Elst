@@ -68,24 +68,26 @@ app.post("/register", async function(req, res) {
   return res.json({ message: "User created!" });
 });
 
-app.listen(port, async() => {
-  console.log(`Authentication is listining to this port: ${  port}`);
-  if (await connectToRabbitMQ() == false) {
-    console.log("RabbitMQ is not connected");
-  } 
-  else {
-    await connectToRabbitMQ();
-    // dit zorgt ervoor dat de target aan een user wordt toegevoegd hij pakt de UserTargetQueue en roept daarbij de users collection aan om 
-    // de targetID toe te voegen aan de user
-    await consumeFromQueue("UserTargetQueue", "users", "get_user_target", async (data, dbname) => {
-      const findUser = await db.collection(dbname).findOne({ uid: data.uid });
-      if (findUser != null) {
-        const targetIDArray = [data.targetID];
-        await db.collection("users").updateOne({uid: data.uid}, {$push: {targetIDs: { $each: targetIDArray }}});
-      }
-    });
-  }
-});
+if (process.env.TESTING !== "true") {
+  app.listen(port, async() => {
+    console.log(`Authentication is listining to this port: ${  port}`);
+    if (await connectToRabbitMQ() == false) {
+      console.log("RabbitMQ is not connected");
+    } 
+    else {
+      await connectToRabbitMQ();
+      // dit zorgt ervoor dat de target aan een user wordt toegevoegd hij pakt de UserTargetQueue en roept daarbij de users collection aan om 
+      // de targetID toe te voegen aan de user
+      await consumeFromQueue("UserTargetQueue", "users", "get_user_target", async (data, dbname) => {
+        const findUser = await db.collection(dbname).findOne({ uid: data.uid });
+        if (findUser != null) {
+          const targetIDArray = [data.targetID];
+          await db.collection("users").updateOne({uid: data.uid}, {$push: {targetIDs: { $each: targetIDArray }}});
+        }
+      });
+    }
+  });
+}
 
 module.exports = {app, jwtOptions};
 
