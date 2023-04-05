@@ -1,5 +1,6 @@
 FROM node:alpine AS build
-
+RUN apt-get update && \
+    apt-get install -y nodejs npm
 WORKDIR /app
 
 # Copy the authenticationservice code and dependicies
