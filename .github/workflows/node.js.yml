@@ -11,17 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     
     services:
-      mongodb:
+      mongo:
         image: mongo:latest
         env:
           AUTHENTICATION_DB: auth
-          AUTHENTICATIONSERVICE_DB_CONNECTION: mongodb://mongodb:27017/auth
+          AUTHENTICATIONSERVICE_DB_CONNECTION: mongodb://mongo:27017/auth
         ports:
-          - 27017:27017
+          - 12347:27017
         options: >-
           --health-cmd "mongo --quiet --eval 'db.runCommand({ connectionStatus: 1 })'" 
           --health-interval 10s --health-timeout 5s --health-retries 3
-        # Set the connection string to the MongoDB instance running as a container         
     
     defaults:
       run:
