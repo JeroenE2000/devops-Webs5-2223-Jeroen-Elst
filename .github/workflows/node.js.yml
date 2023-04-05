@@ -30,7 +30,7 @@ jobs:
     - run: npm ci --legacy-peer-deps
     - run: npm run build --if-present
     # Replace the "npm test" command with "docker-compose run app npm test" to run your tests against the MongoDB container
-    - run: docker-compose run mongodb npm test --coverage
+    - run: docker-compose run mongodb sh -c "apk update && apk add npm && npm test --coverage"
 
     
     - name: Jest coverage report
