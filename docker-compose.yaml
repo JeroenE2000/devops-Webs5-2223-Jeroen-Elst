@@ -64,6 +64,7 @@ services:
     build: 
       context: ./Api_Gateway
       dockerfile: Dockerfile
+    env_file: ./.env
     ports:
       - "${MICROSERVICE_BASE_PORT}:3016"
     environment:
@@ -81,6 +82,7 @@ services:
     build: 
       context: ./AuthenticationService
       dockerfile: Dockerfile
+    env_file: ./.env
     ports:
       - "${AUTHENTICATION_SERVICE_PORT}:3015"
     environment:
@@ -96,6 +98,7 @@ services:
     build: 
       context: ./ExterneService
       dockerfile: Dockerfile
+    env_file: ./.env
     ports:
       - "${EXTERNAL_SERVICE_PORT}:3039"
     environment:
@@ -113,6 +116,7 @@ services:
     build: 
       context: ./ScoreService
       dockerfile: Dockerfile
+    env_file: ./.env
     ports:
       - "${SCORE_SERVICE_PORT}:3038"
     environment:
@@ -129,6 +133,7 @@ services:
     build: 
       context: ./TargetService
       dockerfile: Dockerfile
+    env_file: ./.env
     ports:
       - "${TARGET_SERVICE_PORT}:3012"
     environment:
