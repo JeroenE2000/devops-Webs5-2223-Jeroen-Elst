@@ -10,7 +10,8 @@ COPY . ./uploads
 
 # copy the package.json from the parent directory
 COPY package.json ./
- 
+RUN npm install
+
 
 # Expose the port that the authenticationservice is listen to
 EXPOSE 3012
