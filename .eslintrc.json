@@ -10,11 +10,19 @@
       "ecmaVersion": 12
     },
     "rules": {
+      "no-console": "warn",
       //* Avoid Bugs
+      "no-undef": "error",
       "semi": "error",
       "semi-spacing": "error",
       //* Best Practices
       "eqeqeq": "warn",
+      "no-invalid-this": "error",
+      "no-return-assign": "error",
+      "no-unused-expressions": ["error", { "allowTernary": true }],
+      "no-useless-concat": "error",
+      "no-useless-return": "error",
+      "no-constant-condition": "warn",
       "no-unused-vars": ["warn", { "argsIgnorePattern": "req|res|next|__" }],
       //* Enhance Readability
       "indent": ["error", 2, { "SwitchCase": 1 }],
@@ -25,6 +33,8 @@
       "space-unary-ops": "error",
       "quotes": ["error", "double"],
       //
+      "max-len": ["error", { "code": 200 }],
+      "max-lines": ["error", { "max": 500 }],
       "keyword-spacing": "error",
       "multiline-ternary": ["error", "never"],
       "no-mixed-operators": "error",
@@ -40,6 +50,7 @@
       "arrow-spacing": "error",
       "no-confusing-arrow": "error",
       "no-duplicate-imports": "error",
+      "no-var": "error",
       "object-shorthand": "off",
       "prefer-const": "error",
       "prefer-template": "warn"
