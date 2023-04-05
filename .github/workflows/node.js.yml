@@ -9,19 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
-    services:
-      mongo:
-        image: mongo:latest
-        env:
-          AUTHENTICATION_DB: auth
-          AUTHENTICATIONSERVICE_DB_CONNECTION: mongodb://mongo:27017/auth
-        ports:
-          - 12347:27017
-        options: >-
-          --health-cmd "mongo --quiet --eval 'db.runCommand({ connectionStatus: 1 })'" 
-          --health-interval 10s --health-timeout 5s --health-retries 3
-    
     defaults:
       run:
         working-directory: '.'
@@ -43,7 +30,7 @@ jobs:
     - run: npm ci --legacy-peer-deps
     - run: npm run build --if-present
     # Replace the "npm test" command with "docker-compose run app npm test" to run your tests against the MongoDB container
-    - run: docker-compose run app npm test --coverage
+    - run: docker-compose run mongodb npm test --coverage
     
     - name: Jest coverage report
       uses: ArtiomTr/jest-coverage-report-action@v2
