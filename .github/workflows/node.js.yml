@@ -26,14 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: "package-lock.json"
-
-    - name: Install dependencies
-      run: |
-        apt-get update
-        apt-get install -y nodejs npm
-        npm install -g npm@latest
-        npm install -g docker-compose
-      
+        
     - name: Build and test
       run: |
         npm ci --legacy-peer-deps
