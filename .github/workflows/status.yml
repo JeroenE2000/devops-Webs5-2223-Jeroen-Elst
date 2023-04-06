@@ -3,6 +3,9 @@ name: Update Status Badges
 on:
   schedule:
      - cron: '0 */1 * * *'
+  push:
+    branches:
+      - main
 
 jobs:
   update-readme-with-status:
