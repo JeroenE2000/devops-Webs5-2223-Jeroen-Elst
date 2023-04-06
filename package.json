@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "jest --detectOpenHandles --config ./jest.config.js",
+    "test": "jest --detectOpenHandles --config ./jest.config.js --forceExit" ,
     "lint": "npx eslint .",
     "start": "concurrently \"node ./ExterneService/index.js\" \"node ./ScoreService/index.js\" \"node ./TargetService/index.js\" \"node ./AuthenticationService/index.js\" \"node ./Api_Gateway/index.js\""
   },
