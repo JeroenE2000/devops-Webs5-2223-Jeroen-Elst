@@ -24,6 +24,7 @@ const bodyParser = require("body-parser");
 const port = process.env.TARGET_SERVICE_PORT || 3012;
 
 require("./mongooseconnection");
+const mongooseConnection = require("./mongooseconnection");
 
 const db = mongoose.connection;
 
@@ -59,19 +60,34 @@ app.get("/targets", opaqueTokenCheck, async function(req, res) {
     perPage
   });
 });
+
+
+app.post("/newTarget", async function(req, res) {
+  const { targetName, description, location } = req.body;
+  const tid = 1234567890; // generates a 10-digit random number
+  const data = {
+    tid: tid,
+    targetName: targetName,
+    description: description,
+    location: location,
+  };
+  const targets = await mongooseConnection.collection("targets").insertOne(data);
+  return res.json({
+    message: "success",
+    data: targets
+  });
+});
   
 
 // Route to get all targets by city
-app.get("/targets/city/:city", opaqueTokenCheck, async function(req, res) {
+app.get("/targets/city/:city", async function(req, res) {
   const city = req.params.city;
-
   //check if city is filled in
   if (city == null) {
     return res.json({message: "city is not filled in"});
   }
-  await sendMessageToDirectExchange("targetFilterExchange", JSON.stringify({ city }), "filter_by_city");
-  const result = await TargetModel.find({ "location.placename": city });
-  return res.json({message: "success", data: result});
+  const target_city_filter = await TargetModel.find({ "location.placename": city });
+  return res.json({message: "success", data: target_city_filter});
 });
 
 // Route to get all targets by coordinates
@@ -132,22 +148,25 @@ app.post("/targets", opaqueTokenCheck, upload.single("image"), async function(re
   }
 });
 
-  
-app.listen(port, async() => {
-  console.log(`Server is up on port ${  port}`);
-  if (await connectToRabbitMQ() == false) {
-    console.log("RabbitMQ is not connected");
-  } 
-  else {
-    await connectToRabbitMQ();
-    await consumeFromQueue("targetQueue", "targets", "get_target", async (data, dbname) => {
-      console.log("Uploaded the following data to targets: ", data);
-    });
-    await consumeFromDirectExchange("targetFilterExchange", "targets", "filter_by_city", async function(data, dbname) {
-      console.log("Filtered the following data by city: ", data);
-    });
-    await consumeFromDirectExchange("targetFilterExchange", "targets", "filter_by_coordinates", async function(data, dbname) {
-      console.log("Filtered the following data by coordinates: ", data);
-    });
-  }   
-});
+if (process.env.TESTING !== "true") {
+  app.listen(port, async() => {
+    console.log(`Server is up on port ${  port}`);
+    if (await connectToRabbitMQ() == false) {
+      console.log("RabbitMQ is not connected");
+    } 
+    else {
+      await connectToRabbitMQ();
+      await consumeFromQueue("targetQueue", "targets", "get_target", async (data, dbname) => {
+        console.log("Uploaded the following data to targets: ", data);
+      });
+      await consumeFromDirectExchange("targetFilterExchange", "targets", "filter_by_city", async function(data, dbname) {
+        console.log("Filtered the following data by city: ", data);
+      });
+      await consumeFromDirectExchange("targetFilterExchange", "targets", "filter_by_coordinates", async function(data, dbname) {
+        console.log("Filtered the following data by coordinates: ", data);
+      });
+    }   
+  });
+}
+
+module.exports = {app};
