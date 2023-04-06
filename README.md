@@ -7,6 +7,9 @@ Dit is onze leuke devops omgeving met cloudservices erbij heel veel plzier
 
 [![Node.js](https://github.com/avans-devops/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/avans-devops/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten/actions/workflows/node.js.yml)
 [![okteto-main-publish](https://github.com/avans-devops/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten/actions/workflows/workflow.yml/badge.svg)](https://github.com/avans-devops/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten/actions/workflows/workflow.yml)
+
+| api-gateway-jeroene2000 status | ![api-gateway-jeroene2000 status](https://github.com/avans-devops/devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten/workflows/Okteto%20Service%20Status/badge.svg) |
+
 | Name | Endpoints |
 | ------ | ------ |
 | GATEWAY | https://api-gateway-jeroene2000.cloud.okteto.net/ |
