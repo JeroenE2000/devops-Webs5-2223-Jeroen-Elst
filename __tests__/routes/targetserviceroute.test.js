@@ -11,12 +11,12 @@ describe("POST /newTarget", () => {
   });
       
   afterAll(async () => {
-    server.close();
+    server.close(); //close the server
   });
   it("should create a new target", async () => {
     const target = {targetname: "test", description: "test", location: {coordinates: [0, 0], placename: "test"}};
     const response = await request(app).post("/targetWithoutImage").send(target);
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(200); 
     expect(response.body.message).toBe("success");
   });
   
