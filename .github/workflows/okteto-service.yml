@@ -2,6 +2,9 @@ name: Okteto Service Status
 on:
   schedule:
     - cron: '0 * * * *' # run every hour
+  push:
+    branches:
+      - main
 jobs:
   check-service:
     runs-on: ubuntu-latest
@@ -22,13 +25,19 @@ jobs:
         uses: peaceiris/actions-badge@v2
         with:
           style: flat-square
-          label: ${{ github.event.repository.name }} status
+          label: ${{ github.repository }} status
           message: ${{ steps.service-status.outputs.status }}
           color: ${{ steps.service-status.outputs.status == 'up' && '#4c1' || '#f00' }}
         id: status-badge
       - name: Update README
-        run: |
-          sed -i "s#^\| ${GITHUB_REPOSITORY##*/} status \|.*\|#\| ${GITHUB_REPOSITORY##*/} status \| ![Status](${{ steps.status-badge.outputs.badge }}) \|#" README.md
-          git add README.md
-          git commit -m "Update service status badge"
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update service status badge
+          commit_options: '--no-verify'
+          repository: ${{ github.repository }}
+          branch: ${{ github.ref }}
+          commit_user_name: GitHub Actions
+          commit_user_email: actions@github.com
+          file_pattern: README.md
+          file_content: |
+            | devops-Webs5-2223-Jeroen-Elst-Quinn-Diepstraten status | ![Status](${{ steps.status-badge.outputs.badge }}) |
