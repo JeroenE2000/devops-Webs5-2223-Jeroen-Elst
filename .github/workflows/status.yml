@@ -2,14 +2,14 @@ name: Update Status Badges
 
 on:
   schedule:
-    - cron: '0 */1 * * *'
+     - cron: '*/1 * * * *'
 
 jobs:
   update-readme-with-status:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: bahmutov/update-readme-action@v2
+      - uses: bahmutov/next-update@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           file: README.md
