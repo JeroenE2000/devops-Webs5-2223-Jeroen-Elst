@@ -62,7 +62,7 @@ app.get("/targets", opaqueTokenCheck, async function(req, res) {
 });
 
 
-app.post("/newTarget", async function(req, res) {
+app.post("/targetWithoutImage", async function(req, res) {
   const { targetName, description, location } = req.body;
   const tid = 1234567890; // generates a 10-digit random number
   const data = {
@@ -99,7 +99,6 @@ app.get("/targets/coordinates/:lat/:long", opaqueTokenCheck, async function(req,
   if (lat == null || long == null) {
     return res.json({message: "lat and long are not filled in"});
   }
-  await sendMessageToDirectExchange("targetFilterExchange", JSON.stringify({ long, lat }), "filter_by_coordinates");
   const result = await TargetModel.find({"location.coordinates": [long, lat]});
   return res.json({message: "success", data: result});
 });
@@ -135,7 +134,6 @@ app.post("/targets", opaqueTokenCheck, upload.single("image"), async function(re
         contentType: req.file.mimetype
       }
     };
-    await sendMessageToQueue("targetQueue", JSON.stringify(data), "get_target");
     await db.collection("targets").insertOne(data);
 
     await sendMessageToQueue("imageDataResponseQueue", JSON.stringify(externeServiceData), "image_data_response");
@@ -156,15 +154,6 @@ if (process.env.TESTING !== "true") {
     } 
     else {
       await connectToRabbitMQ();
-      await consumeFromQueue("targetQueue", "targets", "get_target", async (data, dbname) => {
-        console.log("Uploaded the following data to targets: ", data);
-      });
-      await consumeFromDirectExchange("targetFilterExchange", "targets", "filter_by_city", async function(data, dbname) {
-        console.log("Filtered the following data by city: ", data);
-      });
-      await consumeFromDirectExchange("targetFilterExchange", "targets", "filter_by_coordinates", async function(data, dbname) {
-        console.log("Filtered the following data by coordinates: ", data);
-      });
     }   
   });
 }
