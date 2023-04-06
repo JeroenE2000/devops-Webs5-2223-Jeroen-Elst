@@ -1,0 +1,34 @@
+name: Okteto Service Status
+on:
+  schedule:
+    - cron: '0 * * * *' # run every hour
+jobs:
+  check-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up cURL
+        run: sudo apt-get install -y curl
+      - name: Get service status
+        id: service-status
+        run: |
+          if curl --output /dev/null --silent --head --fail "https://api-gateway-jeroene2000.cloud.okteto.net"; then
+            echo "Service is up and running"
+            echo "::set-output name=status::up"
+          else
+            echo "Service is not running"
+            echo "::set-output name=status::down"
+          fi
+      - name: Generate badge
+        uses: peaceiris/actions-badge@v2
+        with:
+          style: flat-square
+          label: ${{ github.event.repository.name }} status
+          message: ${{ steps.service-status.outputs.status }}
+          color: ${{ steps.service-status.outputs.status == 'up' && '#4c1' || '#f00' }}
+        id: status-badge
+      - name: Update README
+        run: |
+          sed -i "s#^\| ${GITHUB_REPOSITORY##*/} status \|.*\|#\| ${GITHUB_REPOSITORY##*/} status \| ![Status](${{ steps.status-badge.outputs.badge }}) \|#" README.md
+          git add README.md
+          git commit -m "Update service status badge"
+          git push
