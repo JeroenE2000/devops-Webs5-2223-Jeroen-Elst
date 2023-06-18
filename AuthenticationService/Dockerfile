@@ -10,7 +10,7 @@ COPY . .
 COPY package.json ./
 
 # install the dependencies
-RUN npm install
+RUN npm install -g npm@9.7.1
 
 # Expose the port that the authenticationservice is listen to
 EXPOSE 3015
